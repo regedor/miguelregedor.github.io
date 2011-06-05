@@ -1,0 +1,28 @@
+---
+layout: post
+title: How to Install Skype (Ubuntu)
+---
+
+Easy as it is. Just add the repository into your rep. list, update the package information and install Skype.
+
+Open your list:
+<blockquote><code>sudo vim /etc/apt/sources.list</code></blockquote>
+
+Add this line at the end:
+<blockquote><code>deb http://download.skype.com/linux/repos/debian/ stable non-free</code></blockquote>
+
+Update:
+<blockquote><code>sudo aptitude update</code></blockquote>
+
+Install skype, answer yes to all question(but think for your self!)
+<blockquote><code>sudo aptitude install skype</code></blockquote>
+
+If you have some problems with audio(like I had) try this lines:
+<blockquote><code>
+killall pulseaudio
+sudo aptitude remove pulseaudio
+sudo aptitude install esound
+sudo rm /etc/X11/Xsession.d/70pulseaudio
+</code></blockquote>
+
+(I'm using Ubuntu 8.10, but also works with Ubuntu 9.10)

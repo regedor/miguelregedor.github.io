@@ -1,0 +1,38 @@
+---
+layout: post
+title: ActionMailler and Gmail (no plugins)
+---
+
+Last week I had some problems while trying to configure the ActionMailler with Gmail. I already have some applications in production mode recurring to this system, but this one, using ruby 1.8.7 and rails 2.3.3 gave me some trouble. Gmail requires TLS, older versions of ruby and rails do not support that, the work around was a pluging to enhance it(for example <a href="http://github.com/openrain/action_mailer_tls/tree/master" title="Gmail e ActionMailer">ActionMailerTLS</a>). If you are using Ruby 1.8.7 and Rails 2.2.1, or later versions, you don't need any plugin, you only need to follow my instructions.
+
+Add the following lines in your config/enviroments/production.rb
+<blockquote><pre style='color:#000000;background:#ffffff;'>config<span style='color:#808030;'>.</span>action_mailer<span style='color:#808030;'>.</span>delivery_method <span style='color:#808030;'>=</span> :smtp
+config<span style='color:#808030;'>.</span>action_mailer<span style='color:#808030;'>.</span>smtp_settings <span style='color:#808030;'>=</span> YAML<span style='color:#808030;'>.</span><span style='color:#400000;'>load</span> File<span style='color:#808030;'>.</span><span style='color:#400000;'>open</span><span style='color:#808030;'>(</span><span style='color:#0000e6;'>"#{RAILS_ROOT}/config/mailer.yml"</span><span style='color:#808030;'>)</span>
+</pre>
+</blockquote>
+And then create the yaml file config/mailer.yml :
+<blockquote><pre style='color:#000000;background:#ffffff;'><span style='color:#808030;'>-</span><span style='color:#808030;'>-</span><span style='color:#808030;'>-</span> 
+  :enable_starttls_auto: <span style='color:#800000;font-weight:bold;'>true</span> <span style='color:#696969;'># This is how you tell ActionMailler to use tls</span>
+  :address: smtp<span style='color:#808030;'>.</span>gmail<span style='color:#808030;'>.</span>com
+  :port: <span style='color:#008c00;'>587</span>
+  :domain: gmail<span style='color:#808030;'>.</span>com
+  :user_name: my_username <span style='color:#696969;'>#You should type your username, you should not include the "@gmail.com".</span>
+  :password: my_password <span style='color:#696969;'>#You should type your password</span>
+  :authentication: :plain
+</pre></blockquote>
+That's it!
+
+Now take a look in this notifier class example:
+<blockquote><pre style='color:#000000;background:#ffffff;'><span style='color:#800000;font-weight:bold;'>class</span> Notifier &lt; ActionMailer::Base
+  <span style='color:#800000;font-weight:bold;'>def</span> activation_instructions<span style='color:#808030;'>(</span>user<span style='color:#808030;'>)</span>
+    @recipients  <span style='color:#808030;'>=</span> <span style='color:#0000e6;'>"#{user.email}"</span>
+    <span style='color:#696969;'>#@from        = "Miguel </span><span style='color:#0000e6;'>&lt;</span><span style='color:#7144c4;'>my_username@gmail.com</span><span style='color:#0000e6;'>&gt;</span><span style='color:#696969;'>" # Doesn't work anymore </span>
+    @from        <span style='color:#808030;'>=</span> <span style='color:#0000e6;'>"my_username@gmail.com"</span> 
+    @subject     <span style='color:#808030;'>=</span> <span style='color:#0000e6;'>"[Card-Sorting] "</span>
+    @sent_on     <span style='color:#808030;'>=</span> Time<span style='color:#808030;'>.</span>now
+    @subject    <span style='color:#808030;'>+</span><span style='color:#808030;'>=</span> <span style='color:#0000e6;'>"Important"</span> 
+    @body<span style='color:#808030;'>[</span>:user<span style='color:#808030;'>]</span> <span style='color:#808030;'>=</span> user
+  <span style='color:#800000;font-weight:bold;'>end</span>
+<span style='color:#800000;font-weight:bold;'>end</span>
+</pre></blockquote>
+There is a lack of backward compatible. Due to some changes in the latest versions you cannot use that syntax anymore, if you are upgrading from old versions be careful, you should only simply specify your email to get it correctly parsed.

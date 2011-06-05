@@ -1,0 +1,15 @@
+---
+layout: post
+title: Git diff pacth
+---
+
+How to create a patch with git diff:
+<code>
+<pre style='color:#000000;background:#ffffff;'>git diff HEAD~<span style='color:#008c00;'>2</span> <span style='color:#e34adc;'>&gt;</span> changes<span style='color:#800000;font-weight:bold;'>.</span>diff</pre>
+</code>
+How to use it:
+<code>
+<pre style='color:#000000;background:#ffffff;'>patch -Np2 -i changes<span style='color:#800000;font-weight:bold;'>.</span>diff</pre>
+</code>
+
+thanks to Andy ;)

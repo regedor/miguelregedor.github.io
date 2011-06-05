@@ -1,0 +1,8 @@
+---
+layout: post
+title: will_paginate without losing params
+---
+
+I'm sure you like will_paginate, it seams magic! But I was having the issue, that I simply solved like that:
+
+<code>will_paginate(@reports, :params =&gt; params.except(:page))</code>

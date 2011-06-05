@@ -1,0 +1,20 @@
+---
+layout: post
+title: Shutdown Timer
+---
+
+This is a simple tip. Go to the terminal and type:
+
+<code>sudo shutdown -h +45</code>
+
+After that your system will shut down in 45 minutes.
+You can also specify the exact time:
+
+<code>sudo shutdown -h 22:30</code>
+
+If you want to cancel the shutdown timer you should use the flag "-c":
+
+<code>sudo shutdown -c</code>
+
+You can also use the flag "-r" or "-s", to reboot or make the system sleep. 
+Read <code>man shutdown</code> for further documentation.

@@ -1,0 +1,16 @@
+---
+layout: post
+title: PayPal Payments Standard, Subscriptions and IPN with Ruby on Rails.
+---
+
+<div>Hi there!</div>
+<div> </div>
+<div>I spend the last week struggling with PayPal documentations and with their buggy sandbox. The information is not well organized, and you can spend hours jumping between pages and pdf to find out what you want, I'm sure they like treasure hunt   games, I remember to following  10 steps, described on a pdf,  to download a sample code, (you should click this link, and now try to find a small square in the middle of the page, press it  and then you should close your eyes for about... crazy weirdoes) anyway... my goal was to implement a subscription system for <a title="laurelandhardyarchive" href="http://www.laurelandhardyarchive.com/">laurelandhardyarchive</a>, and of course because is subscriptions, with PayPal at UK, with IPN, and using rails, everything seems to be a little more difficult (only at the beginning ;)), PayPal doesn’t provide any ruby samples, and there is a good plugin Active Merchant, but again because it's subscription, the documentations also fails(not only for subscriptions, the whole Active Merchant  has a lack of documentation). With that scenario I figure out the best way to solve the problem was to build my own gem to deal with that, the gem should be finished soon, but anyway I leave you a small brief of what is needed to accomplish this, and I leave you some links, so that way you don’t need to a treasure hunt throw PayPal web site.</div>
+<div> </div>
+<div>So... do you need to integrate PayPal subscriptions and IPN into your web site?</div>
+<div> </div>
+<div>For starting you should register into <a title="paypal developer page" href="https://developer.paypal.com/" target="_blank">developer PayPal</a> then you should create two sandbox PayPal  accounts to do your tests (you can use the preconfigured account button for those, but be aware to chose country US even if you are in UK, because you will have troubles to activate the test account, but don’t worry you real account should not have any problems based in the country),  one of the account should be busyness type and the other personal type account, you will use them  to simulate the seller and buyer roles, don't forget to start the personal account (the buyers one) with some money(fake money) you can do that while creating it, click the advanced otptions drop down.</div>
+<div> </div>
+<div>So right now you can use your business account to create code for subscription buttons. For doing that you should access PayPal sandbox, in the developers page (when listing the accounts) you have a link for that. PayPal sandbox is a complete copy of the original PayPal web site, and all test accounts can interact in this closed world.</div>
+<div> </div>
+<div>This is all for now. I'll try to post some code latter. In any case if you're trying to achive something similar and having some difficulties, leave me a message, if have the knowledge to I be glade to help.</div>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: Rewrite humanize
+---
+
+I have an application with all tables and field names in English, but the whole views now need to be in Portuguese.
+
+Because I'm always using the humanize method, a simple solutions should emerge.
+
+First solution:
+<code>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000;font-weight:bold;'>class</span> Ticket
+  HUMANIZED_ATTRIBUTES <span style='color:#808030;'>=</span> <span style='color:#800080;'>{</span>
+    :category &gt; <span style='color:#0000e6;'>"Categoria"</span>,
+    :title &gt; <span style='color:#0000e6;'>"Assunto"</span>
+  <span style='color:#800080;'>}</span>
+  <span style='color:#800000;font-weight:bold;'>def</span> self<span style='color:#808030;'>.</span>human_attribute_name<span style='color:#808030;'>(</span>attr<span style='color:#808030;'>)</span>
+    HUMANIZED_ATTRIBUTES<span style='color:#808030;'>[</span>attr<span style='color:#808030;'>.</span>to_sym<span style='color:#808030;'>]</span> || <span style='color:#800000;font-weight:bold;'>super</span>
+  <span style='color:#800000;font-weight:bold;'>end</span>
+<span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+</code>
+Setting the human_attribue_name in each model works ok,
+but if like in my case, you have 20 models and all of them have a description, title,... much duplication...
+
+So I thought in doing something similar to this in my enviroment.rb:
+<code>
+<pre style='color:#000000;background:#ffffff;'>Inflector<span style='color:#808030;'>.</span>inflections <span style='color:#800000;font-weight:bold;'>do</span> |inflect|
+  inflect<span style='color:#808030;'>.</span>plural <span style='color:#808030;'>/</span>^<span style='color:#808030;'>(</span>foo<span style='color:#808030;'>)</span>$<span style='color:#808030;'>/</span>i, <span style='color:#0000e6;'>'\1ze'</span>
+  inflect<span style='color:#808030;'>.</span>singular <span style='color:#808030;'>/</span>^<span style='color:#808030;'>(</span>foo<span style='color:#808030;'>)</span>ze<span style='color:#808030;'>/</span>i, <span style='color:#0000e6;'>'\1'</span>
+<span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+ </code>
+But for the humanized method instead of pluralize. Yah It would make sense that way, but rails doesn't provide that feature. You can go <a href="http://github.com/rails/rails/commit/4f75840d72b96fff34d65b59480da7d6c7494120#diff-1">here</a> to find a patch for getting that functionality into your rails, I hope they get that into the core... anyway If didn't want to download the patch, how do I solve the problem?
+
+Maybe a rubbish solution but perfect to get what I was needing, translate my views with few lines of code!
+What I've done? Just added those lines into my environment.rb
+<code>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000;font-weight:bold;'>class</span> <span style='color:#400000;'>String</span>
+  <span style='color:#800000;font-weight:bold;'>def</span> humanize
+    <span style='color:#800080;'>{</span>:movie              <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Filme"</span>,
+     :movies             <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Filmes"</span>,
+     :name               <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Nome"</span>,
+     :title              <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Título"</span>,
+     :synopsis           <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Sinopse"</span>,
+     :genre              <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Genero"</span>,
+     :author             <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Autor"</span>,
+     :authors            <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"Autores"</span>
+     <span style='color:#808030;'>.</span><span style='color:#808030;'>.</span><span style='color:#808030;'>.</span>
+    <span style='color:#800080;'>}</span><span style='color:#808030;'>[</span><span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span><span style='color:#400000;'>gsub</span><span style='color:#808030;'>(</span><span style='color:#808030;'>/</span>_id$<span style='color:#808030;'>/</span>, <span style='color:#0000e6;'>""</span><span style='color:#808030;'>)</span><span style='color:#808030;'>.</span>to_sym<span style='color:#808030;'>]</span> || <span style='color:#800000;font-weight:bold;'>super</span>
+  <span style='color:#800000;font-weight:bold;'>end</span>
+<span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+</code>
+I simply redefined the humanize method for whole strings. It works perfectly in my case, because I'm always calling humanize in my views.
+
+keep humanizing the world!

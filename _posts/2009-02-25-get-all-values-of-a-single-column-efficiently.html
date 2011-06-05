@@ -1,0 +1,28 @@
+---
+layout: post
+title: Get all values of a single column efficiently
+---
+
+Imagine you want this:
+
+<code>
+<pre style='color:#000000;background:#ffffff;'>@names <span style='color:#808030;'>=</span> MyModel<span style='color:#808030;'>.</span>find<span style='color:#808030;'>(</span>:all<span style='color:#808030;'>)</span><span style='color:#808030;'>.</span>map<span style='color:#800080;'>{</span> |i| i<span style='color:#808030;'>.</span>name <span style='color:#800080;'>}</span><span style='color:#808030;'>.</span>uniq
+</pre>
+</code>
+
+Yes, that works! You get all distinct names of one column, you can even do something like that:
+
+<code>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#696969;'>#Using Shortcut Blocks with Symbol to_proc</span>
+@names <span style='color:#808030;'>=</span> MyModel<span style='color:#808030;'>.</span>all<span style='color:#808030;'>.</span>map<span style='color:#808030;'>(</span>&amp;:name<span style='color:#808030;'>)</span><span style='color:#808030;'>.</span>uniq
+</pre>
+</code>
+
+Cool, rely small code(almost seems I'm using Haskel) but not that efficient if your model's table has lots of columns. (Imagine! The whole table is being loaded to memory) So what is the solution?
+
+<code>
+<pre style='color:#000000;background:#ffffff;'>MyModel<span style='color:#808030;'>.</span>find<span style='color:#808030;'>(</span> :all, :<span style='color:#400000;'>select</span> &gt; <span style='color:#0000e6;'>'DISTINCT name'</span> <span style='color:#808030;'>)</span>
+</pre>
+</code>
+
+If you specify wich columns you need, in the sql query, you will spare some memory. And in my earlier example you can also pass the "uniq" work to the database.

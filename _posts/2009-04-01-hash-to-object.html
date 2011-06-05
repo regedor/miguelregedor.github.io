@@ -1,0 +1,29 @@
+---
+layout: post
+title: Hash to Object
+---
+
+Sometimes I have the need to create objects that responds to some methods with a specific values. 
+Something that I can use like 
+HashObject.new :method1 =&gt; value_for_method1, :method2 =&gt; value_for_method2
+There is already a way to do it, with OpenStruct, but I created a HashObject. Just for academic proposals. I didn't knew the OpenStruct at the time. 
+<code>
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000;font-weight:bold;'>class</span> HashObject
+  <span style='color:#800000;font-weight:bold;'>def</span> initialize<span style='color:#808030;'>(</span>hash<span style='color:#808030;'>)</span>
+    hash<span style='color:#808030;'>.</span><span style='color:#800000;font-weight:bold;'>each</span> <span style='color:#800000;font-weight:bold;'>do</span> |k,v|
+      <span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span>instance_variable_set<span style='color:#808030;'>(</span><span style='color:#0000e6;'>"@#{k}"</span>, v<span style='color:#808030;'>)</span>
+      <span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span><span style='color:#800000;font-weight:bold;'>class</span><span style='color:#808030;'>.</span>send<span style='color:#808030;'>(</span>:define_method, k, <span style='color:#400000;'>proc</span><span style='color:#800080;'>{</span><span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span>instance_variable_get<span style='color:#808030;'>(</span><span style='color:#0000e6;'>"@#{k}"</span><span style='color:#808030;'>)</span><span style='color:#800080;'>}</span><span style='color:#808030;'>)</span>
+      <span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span><span style='color:#800000;font-weight:bold;'>class</span><span style='color:#808030;'>.</span>send<span style='color:#808030;'>(</span>:define_method, <span style='color:#0000e6;'>"#{k}="</span>, <span style='color:#400000;'>proc</span><span style='color:#800080;'>{</span>|v| <span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span>instance_variable_set<span style='color:#808030;'>(</span><span style='color:#0000e6;'>"@#{k}"</span>, v<span style='color:#808030;'>)</span><span style='color:#800080;'>}</span><span style='color:#808030;'>)</span>
+    <span style='color:#800000;font-weight:bold;'>end</span>
+  <span style='color:#800000;font-weight:bold;'>end</span>
+  
+  <span style='color:#800000;font-weight:bold;'>def</span> to_hash
+    hash_to_return <span style='color:#808030;'>=</span> <span style='color:#800080;'>{</span><span style='color:#800080;'>}</span>
+    <span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span>instance_variables<span style='color:#808030;'>.</span><span style='color:#800000;font-weight:bold;'>each</span> <span style='color:#800000;font-weight:bold;'>do</span> |var|
+      hash_to_return<span style='color:#808030;'>[</span>var<span style='color:#808030;'>.</span><span style='color:#400000;'>gsub</span><span style='color:#808030;'>(</span><span style='color:#0000e6;'>"@"</span>,<span style='color:#0000e6;'>""</span><span style='color:#808030;'>)</span><span style='color:#808030;'>]</span> <span style='color:#808030;'>=</span> <span style='color:#800000;font-weight:bold;'>self</span><span style='color:#808030;'>.</span>instance_variable_get<span style='color:#808030;'>(</span>var<span style='color:#808030;'>)</span>
+    <span style='color:#800000;font-weight:bold;'>end</span>
+    <span style='color:#800000;font-weight:bold;'>return</span> hash_to_return
+  <span style='color:#800000;font-weight:bold;'>end</span>
+<span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+</code>

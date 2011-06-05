@@ -1,0 +1,28 @@
+---
+layout: post
+title: Object.tot
+---
+
+I know Rails 2.3 is out and has a new "try" method, But I was looking into an old app and I saw some code I have written. It's extending the object class with a method called tot (that or that lolol) so that you can use it anywhere like in the example:
+
+<pre style='color:#000000;background:#ffffff;'>tot <span style='color:#800000;font-weight:bold;'>do</span> params<span style='color:#808030;'>[</span>:search<span style='color:#808030;'>]</span><span style='color:#808030;'>[</span>:name<span style='color:#808030;'>]</span> <span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+
+or like that
+<pre style='color:#000000;background:#ffffff;'>tot<span style='color:#808030;'>(</span>:also <span style='color:#808030;'>=</span>&gt; <span style='color:#808030;'>[</span><span style='color:#0000e6;'>""</span>,<span style='color:#0000e6;'>"nome feio"</span><span style='color:#808030;'>]</span>, <span style='color:#800000;font-weight:bold;'>return</span> <span style='color:#808030;'>=</span>&gt; <span style='color:#0000e6;'>"nome invalido"</span><span style='color:#808030;'>)</span> <span style='color:#800000;font-weight:bold;'>do</span> params<span style='color:#808030;'>[</span>:search<span style='color:#808030;'>]</span><span style='color:#808030;'>[</span>:name<span style='color:#808030;'>]</span> <span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+this last example case will return "nome invalido" in case of params[:search][:name] being empty string, "nome feio", or if a NoMethodError happens", other wise it will return params[:search][:name] value
+
+And that is my code extending object class.
+<pre style='color:#000000;background:#ffffff;'><span style='color:#800000;font-weight:bold;'>class</span> Object
+  <span style='color:#800000;font-weight:bold;'>def</span> tot<span style='color:#808030;'>(</span>options <span style='color:#808030;'>=</span> <span style='color:#800080;'>{</span><span style='color:#800080;'>}</span><span style='color:#808030;'>)</span>
+    <span style='color:#800000;font-weight:bold;'>begin</span>
+      <span style='color:#808030;'>(</span>options<span style='color:#808030;'>[</span>:also<span style='color:#808030;'>]</span> <span style='color:#800000;font-weight:bold;'>and</span> options<span style='color:#808030;'>[</span>:also<span style='color:#808030;'>]</span><span style='color:#808030;'>.</span>include?<span style='color:#808030;'>(</span><span style='color:#800000;font-weight:bold;'>yield</span><span style='color:#808030;'>)</span><span style='color:#808030;'>)</span> ? options<span style='color:#808030;'>[</span>:<span style='color:#800000;font-weight:bold;'>return</span><span style='color:#808030;'>]</span> : <span style='color:#800000;font-weight:bold;'>yield</span>
+      <span style='color:#800000;font-weight:bold;'>rescue</span> NoMethodError
+      options<span style='color:#808030;'>[</span>:<span style='color:#800000;font-weight:bold;'>return</span><span style='color:#808030;'>]</span>
+    <span style='color:#800000;font-weight:bold;'>end</span>
+  <span style='color:#800000;font-weight:bold;'>end</span>
+<span style='color:#800000;font-weight:bold;'>end</span>
+</pre>
+
+I found it funny, anyway Ruby on Rails got it's own try method built in some months later.

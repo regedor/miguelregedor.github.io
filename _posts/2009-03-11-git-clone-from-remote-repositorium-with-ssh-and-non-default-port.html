@@ -1,0 +1,17 @@
+---
+layout: post
+title: Git clone from remote repositorium with ssh and non default port
+---
+
+just a reminder, suppose your ssh port is 3022: (sometimes I swap the way to specify the port in those two commands)
+
+<code>
+<pre style='color:#000000;background:#ffffff;'>git clone ssh<span style='color:#808030;'>:</span><span style='color:#40015a;'>/</span><span style='color:#40015a;'>/user</span>@domain<span style='color:#800000;font-weight:bold;'>.</span>com<span style='color:#808030;'>:</span><span style='color:#008c00;'>3022</span><span style='color:#40015a;'>/</span>~<span style='color:#40015a;'>/Projects/my_project</span>
+</pre>
+</code>
+
+<code>
+<pre style='color:#000000;background:#ffffff;'>ssh user@domain<span style='color:#800000;font-weight:bold;'>.</span>com <span style='color:#44aadd;'>-p</span> <span style='color:#008c00;'>3022</span>
+</pre>
+</code>
+(when connecting through ssh the non default port goes as param, the default port is 22)

@@ -1,0 +1,17 @@
+---
+layout: post
+title: Create XML schema from XML file
+---
+
+Suppose you want to create a xsd based on an "example.xml" structure.
+After download and extract <a href="http://code.google.com/p/jing-trang/downloads/detail?name=trang-20090818.zip">trang</a> you can run it with:
+
+
+<code>java -jar /trang.jar example.xml example.xsd</code>
+
+The "example.xsd" file generated may not be exactly what you need, but most of the time it is a good starting point.
+
+To validate a xml file, for instance "example.xml", against an xsd file,
+"example.xsd", you can use the following command:
+
+<code>xmllint --schema form.xsd ~/form.xml</code>
