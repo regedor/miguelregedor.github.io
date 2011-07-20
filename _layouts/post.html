@@ -1,15 +1,43 @@
----
-layout: default
----
-<div class="post">
-  {{ content }}
-</div>
-<div class="disqus" id="disqus_thread"></div>
-<script type="text/javascript">
-    var disqus_shortname = 'regedorwritings';
+<!DOCTYPE html PUBLIC "-//W3C//DTD xhtml 1.0 frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en-us">
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
+  <title>Miguel Regedor Personal Space - {{ page.title }}</title>
+  <meta name="author" content="Miguel Regedor" />
+  <meta name="Description" content="Miguel Regedor's Personal Web Site"> 
+  <meta name="Keywords" content="Miguel Regedor, Miguel, Regedor, Carlos da Torre, Internet, Computers, Developer, Web Developer, freelancer, Group Buddies, Project Manager, Ruby, Ruby on Rails, Metrics, Uminho, Universidade do Minho, Braga, Viana do Castelo, Portugal, UK "> 
+  <link rel="shortcut icon" href="http://www.regedor.com/favicon.ico" type="image/x-icon" />
+  <link rel="icon"          href="http://www.regedor.com/favicon.ico" type="image/x-icon" />
+  <link href="http://feeds.feedburner.com/regedor" rel="alternate" title="Miguel Regedor" type="application/atom+xml" />
+  <link rel="stylesheet" href="/css/reset.css" type="text/css" />
+  <link rel="stylesheet" href="/css/post.css" type="text/css" media="screen, projection"/>
+  <link rel="stylesheet" href="/css/highlight.css" type="text/css" media="screen, projection"/>
+  <script type="text/javascript" src="http://use.typekit.com/cob2uuo.js"></script>
+  <script type="text/javascript">try{Typekit.load();}catch(e){}</script>
+</head>
+<body>
+  <div class="post regedor-font">  
+	<h1 id="post-title">{{ page.title }}</h1>
+    {{ content }}
+  </div>
+  <div class="disqus" id="disqus_thread"></div>
+  <script type="text/javascript">
+      var disqus_shortname = 'regedorwritings';
+      (function() {
+          var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+          dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+          (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+  </script>
+  <script type="text/javascript">
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-24035599-1']);
+    _gaq.push(['_trackPageview']);
     (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+      var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
     })();
-</script>
+  </script>
+</body>
+</html>																																												  

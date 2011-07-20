@@ -1,14 +1,14 @@
 ---
-layout: writings
+layout: home
 title: Miguel Regedor
 ---
-<div id="home">  
+<div id="writings">  
   <h1>Writings</h1>
   <ul class="posts">
     {% for post in site.posts %}
     <li>
-      <a href="{{ post.url }}">{{ post.title }}</a>,
-      <span>{{ post.date | date_to_long_string }}</span>
+      <a href="{{ post.url }}">{{ post.title }}</a>
+      <span class="post-date">{{ post.date | date_to_long_string }}</span>
     </li>
     {% endfor %}
   </ul>
